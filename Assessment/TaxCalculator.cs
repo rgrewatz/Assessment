@@ -7,18 +7,18 @@ namespace Assessment
 {
     public class TaxCalculator
     {
-        private IEnumerable<TaxAction> _taxActions;
+        private IEnumerable<TaxRule> _taxActions;
 
         public TaxCalculator()
         {
-            _taxActions = new List<TaxAction>
+            _taxActions = new List<TaxRule>
             {
-                new TaxAction((p) => p.Type == ProductType.Other, .1m),
-                new TaxAction((p) => p.Imported, .05m)
+                new TaxRule((p) => p.Type == ProductType.Other, .1m),
+                new TaxRule((p) => p.Imported, .05m)
             };
         }
 
-        public TaxCalculator(IEnumerable<TaxAction> taxActions)
+        public TaxCalculator(IEnumerable<TaxRule> taxActions)
         {
             _taxActions = taxActions;
         }

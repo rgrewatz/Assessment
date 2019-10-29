@@ -2,11 +2,11 @@
 
 namespace Assessment
 {
-    public class TaxAction
+    public class TaxRule
     {
         private Func<Product, bool> _ruleExpression;
         private decimal _percentageTax;
-        public TaxAction(Func<Product, bool> ruleExpression, decimal percentageTax)
+        public TaxRule(Func<Product, bool> ruleExpression, decimal percentageTax)
         {
             _ruleExpression = ruleExpression;
             _percentageTax = percentageTax;
