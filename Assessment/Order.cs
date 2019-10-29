@@ -44,7 +44,7 @@ namespace Assessment
         public override string ToString()
         {
             var builder = new StringBuilder();
-            _products.ForEach(p => builder.AppendLine($"{p.Quantity} {p.Name}: {p.Price + _taxCalculator.CalculateTax(p):F2}"));
+            _products.ForEach(p => builder.AppendLine($"{p.Quantity} {(p.Imported ? "Imported " : null)}{p.Name}: {p.Price + _taxCalculator.CalculateTax(p):F2}"));
             builder.AppendLine($"Sales Taxes: {TotalTaxes:F2}");
             builder.AppendLine($"Total: {Total:F2}");
             return builder.ToString();
