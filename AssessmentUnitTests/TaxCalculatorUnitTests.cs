@@ -1,16 +1,22 @@
 using Assessment;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace AssessmentUnitTests
 {
     public class TaxCalculatorUnitTests
     {
-        private TaxCalculator _calculator;
+        private TaxCalculator<Product> _calculator;
 
         [SetUp]
         public void Setup()
         {
-            _calculator = new TaxCalculator(.10m, .05m);
+            var taxActions = new List<TaxAction<Product>>
+            {
+                new TaxAction<Product>((p) => p.Type == ProductType.Other, (p) => p.Price * .1m),
+                new TaxAction<Product>((p) => p.Imported, (p) => p.Price * .05m)
+            };
+            _calculator = new TaxCalculator<Product>(taxActions);
         }
 
         [Test]

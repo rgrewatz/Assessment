@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Assessment
 {
-    public class TaxCalculator
+    public class TaxCalculator<T> where T : Financial
     {
-        private decimal _salesTaxPercentage;
-        private decimal _dutyPercentage;
-        public TaxCalculator(decimal salesTaxPercentage, decimal dutyPercentage)
+        private IEnumerable<TaxAction<T>> _taxActions;
+        public TaxCalculator(IEnumerable<TaxAction<T>> taxActions)
         {
-            _salesTaxPercentage = salesTaxPercentage;
-            _dutyPercentage = dutyPercentage;
+            _taxActions = taxActions;
         }
 
-        public decimal CalculateTax(Product product)
+        public decimal CalculateTax(T t)
         {
             decimal tax = 0;
+            foreach (var action in _taxActions)
+            {
+                tax += action.Apply(t);
+            }
+            return Math.Ceiling(tax * 100 / 5) * 5 / 100;
+            /*
 
-            if(!(product.Type == ProductType.Book || product.Type == ProductType.Food || product.Type == ProductType.Medical))
+            if(_taxedTypes.Any(x => x == product.Type))
             {
                 tax = product.Price * _salesTaxPercentage;
             }
@@ -28,7 +33,8 @@ namespace Assessment
                 tax += product.Price * _dutyPercentage; 
             }
 
-            return Math.Ceiling(tax * 100 / 5) * 5 / 100;
+            
+            */
         }
     }
 }

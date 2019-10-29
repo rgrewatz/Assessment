@@ -8,7 +8,12 @@ namespace Assessment
     {
         static void Main(string[] args)
         {
-            var calculator = new TaxCalculator(.10m, .05m);
+            var taxActions = new List<TaxAction<Product>>
+            {
+                new TaxAction<Product>((p) => p.Type == ProductType.Other, (p) => p.Price * .1m),
+                new TaxAction<Product>((p) => p.Imported, (p) => p.Price * .05m)
+            };
+            var calculator = new TaxCalculator<Product>(taxActions);
             var products = new List<Product> {
                 new Product { Name = "Book", Type = ProductType.Book, Price = 12.49m, Quantity = 1, Imported = false },
                 new Product { Name = "Music CD", Type = ProductType.Other, Price = 14.99m, Quantity = 1, Imported = false },
