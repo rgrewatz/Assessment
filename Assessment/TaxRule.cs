@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Assessment
 {
-    public class TaxAction<T> where T : Financial
+    public class TaxAction<T> 
     {
         private Func<T, bool> _ruleExpression;
         private Func<T, decimal> _taxAction;

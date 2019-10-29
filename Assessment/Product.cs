@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Assessment
 {
-    public class Product : Financial
+    public class Product
     {
         public string Name { get; set; }
         public bool Imported { get; set; }

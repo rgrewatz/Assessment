@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assessment
 {
-    public class TaxCalculator<T> where T : Financial
+    public class TaxCalculator<T>
     {
         private IEnumerable<TaxAction<T>> _taxActions;
         public TaxCalculator(IEnumerable<TaxAction<T>> taxActions)
