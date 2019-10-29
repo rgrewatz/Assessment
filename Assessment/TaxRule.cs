@@ -1,27 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Assessment
 {
-    public class TaxAction<T> 
+    public class TaxAction
     {
-        private Func<T, bool> _ruleExpression;
-        private Func<T, decimal> _taxAction;
-        public TaxAction(Func<T, bool> ruleExpression, Func<T, decimal> taxAction)
+        private Func<Product, bool> _ruleExpression;
+        private decimal _percentageTax;
+        public TaxAction(Func<Product, bool> ruleExpression, decimal percentageTax)
         {
             _ruleExpression = ruleExpression;
-            _taxAction = taxAction;
+            _percentageTax = percentageTax;
         }
 
-        private bool IsTrue(T t)
+        private bool IsTrue(Product product)
         {
-            return _ruleExpression.Invoke(t);
+            return _ruleExpression?.Invoke(product) ?? false;
         }
 
-        public decimal Apply(T t)
+        public decimal GetPercentageTax(Product product)
         {
-            return IsTrue(t) ? _taxAction.Invoke(t) : 0;
+            return IsTrue(product) ? _percentageTax : 0;
         }
     }
 }

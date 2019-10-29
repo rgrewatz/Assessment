@@ -6,31 +6,22 @@ using System.Text;
 
 namespace Assessment
 {
-    public class Order<T> where T : Product
+    public class Order
     {
-        private TaxCalculator<T> _taxCalculator;
-        private List<T> _products;
-        private decimal? _totalTaxes;
-        private decimal? _preTaxTotal;
-        private bool _recalculateTax;
-        private bool _recalculatePreTaxTotal;
+        private TaxCalculator _taxCalculator;
+        private List<Product> _products;
 
-        public Order(TaxCalculator<T> taxCalculator, List<T> products)
+        public Order(TaxCalculator taxCalculator, List<Product> products)
         {
             _taxCalculator = taxCalculator;
-            _products = products ?? new List<T>();
+            _products = products ?? new List<Product>();
         }
 
         public decimal TotalTaxes
         {
             get
             {
-                if (!_totalTaxes.HasValue || _recalculateTax)
-                {
-                    _totalTaxes = _products.Sum(x => _taxCalculator.CalculateTax(x));
-                }
-                _recalculateTax = false;
-                return _totalTaxes.Value;
+                return _products.Sum(x => _taxCalculator.CalculateTax(x));
             }
         }
 
@@ -38,11 +29,7 @@ namespace Assessment
         {
             get
             {
-                if (!_preTaxTotal.HasValue || _recalculatePreTaxTotal)
-                {
-                    _preTaxTotal = _products.Sum(x => x.Price);
-                }
-                return _preTaxTotal.Value;
+                return _products.Sum(x => x.Price);
             }
         }
 
@@ -54,26 +41,13 @@ namespace Assessment
             }
         }
 
-        public void AddProduct(T t)
+        public override string ToString()
         {
-            _products.Add(t);
-            _recalculateTax = true;
-            _recalculatePreTaxTotal = true;
-        }
-
-        public void RemoveProduct(T t)
-        {
-            _products.Remove(t);
-            _recalculateTax = true;
-            _recalculatePreTaxTotal = true;
-        }
-
-        public void PrintOrder()
-        {
-            _products.ForEach(p => Console.WriteLine($"{p.Quantity} {p.Name}: {p.Price + _taxCalculator.CalculateTax(p)}"));
-            Console.WriteLine($"Sales Taxes: {TotalTaxes}");
-            Console.WriteLine($"Total: {Total}");
-
+            var builder = new StringBuilder();
+            _products.ForEach(p => builder.AppendLine($"{p.Quantity} {p.Name}: {p.Price + _taxCalculator.CalculateTax(p):F2}"));
+            builder.AppendLine($"Sales Taxes: {TotalTaxes:F2}");
+            builder.AppendLine($"Total: {Total:F2}");
+            return builder.ToString();
         }
     }
 }

@@ -5,36 +5,34 @@ using System.Text;
 
 namespace Assessment
 {
-    public class TaxCalculator<T>
+    public class TaxCalculator
     {
-        private IEnumerable<TaxAction<T>> _taxActions;
-        public TaxCalculator(IEnumerable<TaxAction<T>> taxActions)
+        private IEnumerable<TaxAction> _taxActions;
+
+        public TaxCalculator()
+        {
+            _taxActions = new List<TaxAction>
+            {
+                new TaxAction((p) => p.Type == ProductType.Other, .1m),
+                new TaxAction((p) => p.Imported, .05m)
+            };
+        }
+
+        public TaxCalculator(IEnumerable<TaxAction> taxActions)
         {
             _taxActions = taxActions;
         }
 
-        public decimal CalculateTax(T t)
+        public decimal CalculateTax(Product product)
         {
             decimal tax = 0;
-            foreach (var action in _taxActions)
-            {
-                tax += action.Apply(t);
-            }
-            return Math.Ceiling(tax * 100 / 5) * 5 / 100;
-            /*
 
-            if(_taxedTypes.Any(x => x == product.Type))
+            foreach (var taxAction in _taxActions)
             {
-                tax = product.Price * _salesTaxPercentage;
+                tax += product.Price * taxAction.GetPercentageTax(product) * product.Quantity;
             }
 
-            if (product.Imported)
-            {
-                tax += product.Price * _dutyPercentage; 
-            }
-
-            
-            */
+            return Math.Ceiling(tax * 20) / 20;
         }
     }
 }
