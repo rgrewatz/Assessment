@@ -5,14 +5,19 @@ using System.Linq;
 
 namespace AssessmentUnitTests
 {
-    public class TaxCalculatorUnitTests
+    public class ProductCalculatorUnitTests
     {
-        private TaxCalculator _calculator;
+        private ProductCalculator _calculator;
 
         [SetUp]
         public void Setup()
         {
-            _calculator = new TaxCalculator();
+            _calculator = new ProductCalculator(
+                new List<RuleAction<Product>>
+                {
+                    new RuleAction<Product>((p) => p.Type == ProductType.Other, (p) => p.Price * 0.1m * p.Quantity),
+                    new RuleAction<Product>((p) => p.Imported, (p) => p.Price * 0.05m * p.Quantity)
+                });
         }
 
         [Test]
@@ -25,7 +30,7 @@ namespace AssessmentUnitTests
                 Quantity = 1
             };
 
-            Assert.AreEqual(12.49, p.Price + _calculator.CalculateTax(p));
+            Assert.AreEqual(12.49, p.Price + _calculator.Calculate(p));
         }
 
         [Test]
@@ -38,7 +43,7 @@ namespace AssessmentUnitTests
                 Quantity = 1
             };
 
-            Assert.AreEqual(1.50m, _calculator.CalculateTax(p));
+            Assert.AreEqual(1.50m, _calculator.Calculate(p));
         }
 
         [Test]
@@ -51,7 +56,7 @@ namespace AssessmentUnitTests
                 Quantity = 55
             };
 
-            Assert.AreEqual(82.45, _calculator.CalculateTax(p));
+            Assert.AreEqual(82.45, _calculator.Calculate(p));
         }
 
         [Test]
@@ -65,7 +70,7 @@ namespace AssessmentUnitTests
                 Quantity = 1
             };
 
-            Assert.AreEqual(11.85m, p.Price + _calculator.CalculateTax(p));
+            Assert.AreEqual(11.85m, p.Price + _calculator.Calculate(p));
         }
 
         [Test]
@@ -79,7 +84,7 @@ namespace AssessmentUnitTests
                 Quantity = 1
             };
 
-            Assert.AreEqual(32.19m, p.Price + _calculator.CalculateTax(p));
+            Assert.AreEqual(32.19m, p.Price + _calculator.Calculate(p));
         }
 
         [Test]
@@ -90,7 +95,7 @@ namespace AssessmentUnitTests
                 new Product { Type = ProductType.Other, Price = 14.99m, Quantity = 1, Imported = false },
                 new Product { Type = ProductType.Food, Price = .85m, Quantity = 1, Imported = false }
             };
-            Assert.AreEqual(1.50m, products.Sum(x => _calculator.CalculateTax(x)));
+            Assert.AreEqual(1.50m, products.Sum(x => _calculator.Calculate(x)));
         }
 
         [Test]
@@ -103,7 +108,7 @@ namespace AssessmentUnitTests
                 new Product { Type = ProductType.Food, Price = 11.25m, Quantity = 1, Imported = true }
             };
 
-            Assert.AreEqual(6.70, products.Sum(x => _calculator.CalculateTax(x)));
+            Assert.AreEqual(6.70, products.Sum(x => _calculator.Calculate(x)));
         }
     }
 }

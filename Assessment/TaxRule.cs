@@ -2,24 +2,24 @@
 
 namespace Assessment
 {
-    public class TaxRule
+    public class RuleAction<T>
     {
-        private Func<Product, bool> _ruleExpression;
-        private decimal _percentageTax;
-        public TaxRule(Func<Product, bool> ruleExpression, decimal percentageTax)
+        private Func<T, bool> _ruleExpression;
+        private Func<T, decimal> _ruleAction;
+        public RuleAction(Func<T, bool> ruleExpression, Func<T, decimal> ruleAction)
         {
             _ruleExpression = ruleExpression;
-            _percentageTax = percentageTax;
+            _ruleAction = ruleAction;
         }
 
-        private bool IsTrue(Product product)
+        public bool IsTrue(T t)
         {
-            return _ruleExpression?.Invoke(product) ?? false;
+            return _ruleExpression?.Invoke(t) ?? false;
         }
 
-        public decimal GetPercentageTax(Product product)
+        public decimal ApplyCalculation(T t)
         {
-            return IsTrue(product) ? _percentageTax : 0;
+            return IsTrue(t) ? (_ruleAction?.Invoke(t) ?? 0) : 0;
         }
     }
 }

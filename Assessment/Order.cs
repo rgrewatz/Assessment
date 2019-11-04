@@ -6,22 +6,22 @@ using System.Text;
 
 namespace Assessment
 {
-    public class Order
+    public class Order<T> where T : Financial
     {
-        private TaxCalculator _taxCalculator;
-        private List<Product> _products;
+        private Calculator<T> _calculator;
+        private List<T> _financials;
 
-        public Order(TaxCalculator taxCalculator, List<Product> products)
+        public Order(Calculator<T> calculator, List<T> financals)
         {
-            _taxCalculator = taxCalculator;
-            _products = products ?? new List<Product>();
+            _calculator = calculator;
+            _financials = financals ?? new List<T>();
         }
 
         public decimal TotalTaxes
         {
             get
             {
-                return _products.Sum(x => _taxCalculator.CalculateTax(x));
+                return _financials.Sum(x => _calculator.Calculate(x));
             }
         }
 
@@ -29,7 +29,7 @@ namespace Assessment
         {
             get
             {
-                return _products.Sum(x => x.Price);
+                return _financials.Sum(x => x.Price);
             }
         }
 
@@ -39,15 +39,6 @@ namespace Assessment
             {
                 return PreTaxTotal + TotalTaxes;
             }
-        }
-
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            _products.ForEach(p => builder.AppendLine($"{p.Quantity} {(p.Imported ? "Imported " : null)}{p.Name}: {p.Price + _taxCalculator.CalculateTax(p):F2}"));
-            builder.AppendLine($"Sales Taxes: {TotalTaxes:F2}");
-            builder.AppendLine($"Total: {Total:F2}");
-            return builder.ToString();
         }
     }
 }
