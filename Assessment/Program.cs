@@ -9,7 +9,7 @@ namespace Assessment
     {
         static void Main(string[] args)
         {
-            var calculator = new ProductCalculator(
+            var calculator = new Calculator<Product>(
                 new List<RuleAction<Product>>
                 {
                     new RuleAction<Product>((p) => p.Type == ProductType.Other, (p) => p.Price * 0.1m * p.Quantity),
@@ -26,6 +26,7 @@ namespace Assessment
 
             var builder = new StringBuilder();
             products.ForEach(p => builder.AppendLine($"{p.Quantity} {(p.Imported ? "Imported " : null)}{p.Name}: {p.Price + calculator.Calculate(p):F2}"));
+            builder.AppendLine($"Subtotal: {order.SubTotal:F2}");
             builder.AppendLine($"Sales Taxes: {order.TotalTaxes:F2}");
             builder.AppendLine($"Total: {order.Total:F2}");
             Console.WriteLine(builder);
@@ -38,6 +39,7 @@ namespace Assessment
 
             builder = new StringBuilder();
             products.ForEach(p => builder.AppendLine($"{p.Quantity} {(p.Imported ? "Imported " : null)}{p.Name}: {p.Price + calculator.Calculate(p):F2}"));
+            builder.AppendLine($"Subtotal: {order.SubTotal:F2}");
             builder.AppendLine($"Sales Taxes: {order.TotalTaxes:F2}");
             builder.AppendLine($"Total: {order.Total:F2}");
             Console.WriteLine(builder);
@@ -52,6 +54,7 @@ namespace Assessment
 
             builder = new StringBuilder();
             products.ForEach(p => builder.AppendLine($"{p.Quantity} {(p.Imported ? "Imported " : null)}{p.Name}: {p.Price + calculator.Calculate(p):F2}"));
+            builder.AppendLine($"Subtotal: {order.SubTotal:F2}");
             builder.AppendLine($"Sales Taxes: {order.TotalTaxes:F2}");
             builder.AppendLine($"Total: {order.Total:F2}");
             Console.WriteLine(builder);

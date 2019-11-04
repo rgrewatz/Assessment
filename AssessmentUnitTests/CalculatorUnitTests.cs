@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace AssessmentUnitTests
 {
-    public class ProductCalculatorUnitTests
+    public class CalculatorUnitTests
     {
-        private ProductCalculator _calculator;
+        private Calculator<Product> _calculator;
 
         [SetUp]
         public void Setup()
         {
-            _calculator = new ProductCalculator(
+            _calculator = new Calculator<Product>(
                 new List<RuleAction<Product>>
                 {
                     new RuleAction<Product>((p) => p.Type == ProductType.Other, (p) => p.Price * 0.1m * p.Quantity),

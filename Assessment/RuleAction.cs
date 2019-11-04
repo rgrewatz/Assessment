@@ -17,7 +17,7 @@ namespace Assessment
             return _ruleExpression?.Invoke(t) ?? false;
         }
 
-        public decimal ApplyCalculation(T t)
+        public decimal Apply(T t)
         {
             return IsTrue(t) ? (_ruleAction?.Invoke(t) ?? 0) : 0;
         }

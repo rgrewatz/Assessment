@@ -25,7 +25,7 @@ namespace Assessment
             }
         }
 
-        public decimal PreTaxTotal
+        public decimal SubTotal
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Assessment
         {
             get
             {
-                return PreTaxTotal + TotalTaxes;
+                return SubTotal + TotalTaxes;
             }
         }
     }

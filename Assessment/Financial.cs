@@ -1,6 +1,6 @@
 ﻿namespace Assessment
 {
-    public abstract class Financial
+    public class Financial
     {
         public string Name { get; set; }
         public decimal Price { get; set; }

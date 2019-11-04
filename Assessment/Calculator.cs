@@ -4,9 +4,14 @@ using System.Text;
 
 namespace Assessment
 {
-    public abstract class Calculator<T>
+    public class Calculator<T>
     {
         protected IEnumerable<RuleAction<T>> _ruleActions;
+
+        public Calculator(IEnumerable<RuleAction<T>> ruleActions)
+        {
+            _ruleActions = ruleActions;
+        }
 
         public decimal Calculate(T t)
         {
@@ -16,7 +21,7 @@ namespace Assessment
             {
                 if (ruleAction.IsTrue(t))
                 {
-                    total += ruleAction.ApplyCalculation(t);
+                    total += ruleAction.Apply(t);
                 }
             }
 
